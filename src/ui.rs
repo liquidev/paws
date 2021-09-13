@@ -21,6 +21,10 @@ struct Group {
     line_joint: LineJoint,
 }
 
+// for use in doc comment
+#[allow(unused)]
+use crate::build;
+
 /// UI state. This is what's used for laying out groups and drawing to the screen.
 ///
 /// # The group stack
@@ -153,6 +157,11 @@ struct Group {
 /// `set_*` methods operates on the topmost (current) group in the stack, and each of these properties is inherent to
 /// that group. All properties (except the cursor) are inherited from the parent group when a new group is pushed onto
 /// the stack.
+///
+/// # `build!`
+///
+/// For your convenience while building UIs, a macro is available to make all those `push`es and `pop`s get out of your
+/// face. See [`build!`]'s documentation for more info.
 pub struct Ui<T: Renderer> {
     stack: Vec<Group>,
     renderer: T,
@@ -479,7 +488,8 @@ impl<T: Renderer> Ui<T> {
             line_joint,
             ..
         } = self.top().clone();
-        self.render().line(a, b, color, line_cap, line_joint, thickness);
+        self.render()
+            .line(a, b, color, line_cap, line_joint, thickness);
     }
 
     /// Draws a line spanning the left side of the current group, with the given color and line thickness.
@@ -520,7 +530,13 @@ impl<T: Renderer> Ui<T> {
     ///
     /// # Panics
     /// If there are no groups on the stack, or if a font isn't set.
-    pub fn text(&mut self, font: &T::Font, text: &str, color: impl Into<Color>, alignment: Alignment) {
+    pub fn text(
+        &mut self,
+        font: &T::Font,
+        text: &str,
+        color: impl Into<Color>,
+        alignment: Alignment,
+    ) {
         let rect = self.top().rect;
         self.render()
             .text(rect, font, text, color.into(), alignment);
