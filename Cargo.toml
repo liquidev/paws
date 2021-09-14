@@ -7,4 +7,4 @@ description = "A very simple, bring-your-own-backend UI layout library built for
 license = "MIT"
 repository = "https://github.com/liquidev/paws"
 readme = "README.md"
-categories = ["ui"]
+categories = ["gui", "game-development"]
