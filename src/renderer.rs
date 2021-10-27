@@ -66,6 +66,16 @@ pub trait Renderer {
 pub trait SizedImage {
     /// Returns the size of the image.
     fn size(&self) -> Vector;
+
+    /// Returns the height of the image.
+    fn width(&self) -> f32 {
+        self.size().x
+    }
+
+    /// Returns the height of the image.
+    fn height(&self) -> f32 {
+        self.size().y
+    }
 }
 
 /// A dummy renderer. This can be used for executing graphics commands without a graphical backend available.

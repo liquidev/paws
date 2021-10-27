@@ -58,6 +58,25 @@ impl Color {
         Self { r, g, b, a }
     }
 
+    /// Creates a new color from an ARGB hex literal.
+    pub const fn argb(hex: u32) -> Self {
+        let a = (hex >> 24) & 0xFF;
+        let r = (hex >> 16) & 0xFF;
+        let g = (hex >> 8) & 0xFF;
+        let b = hex & 0xFF;
+        Self {
+            r: r as u8,
+            g: g as u8,
+            b: b as u8,
+            a: a as u8,
+        }
+    }
+
+    /// Creates a new color from an RGB hex literal.
+    pub const fn rgb(hex: u32) -> Self {
+        Self::argb(hex & 0xFF000000)
+    }
+
     /// Returns a color with the same RGB channels, but with the alpha channel altered.
     pub const fn with_alpha(self, a: u8) -> Self {
         Self::new(self.r, self.g, self.b, a)
