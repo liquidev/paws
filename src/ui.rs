@@ -18,7 +18,6 @@ struct Group {
     // rendering info
     //
     line_cap: LineCap,
-    line_joint: LineJoint,
 }
 
 // for use in doc comment
@@ -264,7 +263,6 @@ impl<T: Renderer> Ui<T> {
             layout,
             cursor: vector(0.0, 0.0),
             line_cap: LineCap::Butt,
-            line_joint: LineJoint::Miter,
         });
     }
 
@@ -471,25 +469,9 @@ impl<T: Renderer> Ui<T> {
         self.top_mut().line_cap = new_line_cap;
     }
 
-    /// Returns the current group's line joint.
-    pub fn line_joint(&self) -> LineJoint {
-        self.top().line_joint
-    }
-
-    /// Sets the current group's line joint for rendering lines. The root group's default line joint is
-    /// [`LineJoint::Miter`].
-    pub fn set_line_joint(&mut self, new_line_joint: LineJoint) {
-        self.top_mut().line_joint = new_line_joint;
-    }
-
     fn border(&mut self, a: Point, b: Point, color: Color, thickness: f32) {
-        let Group {
-            line_cap,
-            line_joint,
-            ..
-        } = self.top().clone();
-        self.render()
-            .line(a, b, color, line_cap, line_joint, thickness);
+        let line_cap = self.top().line_cap;
+        self.render().line(a, b, color, line_cap, thickness);
     }
 
     /// Draws a line spanning the left side of the current group, with the given color and line thickness.

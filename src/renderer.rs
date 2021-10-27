@@ -11,14 +11,6 @@ pub enum LineCap {
     Round,
 }
 
-/// The type of line joint to use when rendering.
-#[derive(Copy, Clone, PartialEq, Eq)]
-pub enum LineJoint {
-    Bevel,
-    Miter,
-    Round,
-}
-
 /// The renderer trait, used for all things drawing-related.
 /// This trait is available for the user's convenience. If a type that doesn't implement `Renderer` is specified in
 /// `Ui`, convenience rendering functions are not available and the user must handle rendering all by themselves.
@@ -53,15 +45,7 @@ pub trait Renderer {
     /// Draws an outline for the provided rectangle, with the given color, corner radius, and thickness.
     fn outline(&mut self, rect: Rect, color: Color, radius: f32, thickness: f32);
     /// Draws a line from point A to point B, with the given color, cap type, joint type, and thickness.
-    fn line(
-        &mut self,
-        a: Point,
-        b: Point,
-        color: Color,
-        cap: LineCap,
-        joint: LineJoint,
-        thickness: f32,
-    );
+    fn line(&mut self, a: Point, b: Point, color: Color, cap: LineCap, thickness: f32);
 
     /// Draws text aligned inside of the provided rectangle, with the given color.
     fn text(
@@ -104,7 +88,7 @@ impl Renderer for NoRenderer {
 
     fn fill(&mut self, _: Rect, _: Color, _: f32) {}
     fn outline(&mut self, _: Rect, _: Color, _: f32, _: f32) {}
-    fn line(&mut self, _: Point, _: Point, _: Color, _: LineCap, _: LineJoint, _: f32) {}
+    fn line(&mut self, _: Point, _: Point, _: Color, _: LineCap, _: f32) {}
 
     fn text(&mut self, _: Rect, _: &Self::Font, _: &str, _: Color, _: Alignment) {}
     fn image(&mut self, _: Rect, _: &Self::Image) {}
