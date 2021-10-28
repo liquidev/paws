@@ -23,8 +23,6 @@ pub enum LineCap {
 pub trait Renderer {
     /// The font type used for rendering text. May be `()` if text rendering isn't supported.
     type Font;
-    /// The image type used for rendering images. May be `()` if text rendering isn't supported.
-    type Image: SizedImage;
 
     /// Pushes the current transform matrix and clip region onto a stack.
     fn push(&mut self);
@@ -48,6 +46,8 @@ pub trait Renderer {
     fn line(&mut self, a: Point, b: Point, color: Color, cap: LineCap, thickness: f32);
 
     /// Draws text aligned inside of the provided rectangle, with the given color.
+    ///
+    /// Returns the horizontal advance of the text.
     fn text(
         &mut self,
         rect: Rect,
@@ -55,27 +55,7 @@ pub trait Renderer {
         text: &str,
         color: Color,
         alignment: Alignment,
-    );
-
-    /// Draws an image. The renderer should at least take the rectangle's position into account, but things like
-    /// wrapping mode and sampling are not specified by this library.
-    fn image(&mut self, rect: Rect, image: &Self::Image);
-}
-
-/// An image whose size can be measured.
-pub trait SizedImage {
-    /// Returns the size of the image.
-    fn size(&self) -> Vector;
-
-    /// Returns the height of the image.
-    fn width(&self) -> f32 {
-        self.size().x
-    }
-
-    /// Returns the height of the image.
-    fn height(&self) -> f32 {
-        self.size().y
-    }
+    ) -> f32;
 }
 
 /// A dummy renderer. This can be used for executing graphics commands without a graphical backend available.
@@ -89,7 +69,6 @@ pub struct NoRendererImage;
 
 impl Renderer for NoRenderer {
     type Font = NoRendererFont;
-    type Image = NoRendererImage;
 
     fn push(&mut self) {}
     fn pop(&mut self) {}
@@ -100,12 +79,7 @@ impl Renderer for NoRenderer {
     fn outline(&mut self, _: Rect, _: Color, _: f32, _: f32) {}
     fn line(&mut self, _: Point, _: Point, _: Color, _: LineCap, _: f32) {}
 
-    fn text(&mut self, _: Rect, _: &Self::Font, _: &str, _: Color, _: Alignment) {}
-    fn image(&mut self, _: Rect, _: &Self::Image) {}
-}
-
-impl SizedImage for NoRendererImage {
-    fn size(&self) -> Vector {
-        Vector::default()
+    fn text(&mut self, _: Rect, _: &Self::Font, _: &str, _: Color, _: Alignment) -> f32 {
+        0.0
     }
 }
