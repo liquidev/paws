@@ -315,6 +315,11 @@ impl<T: Renderer> Ui<T> {
         self.top_mut().cursor = new_cursor;
     }
 
+    /// Offsets the cursor by the given amount.
+    pub fn offset(&mut self, by: Vector) {
+        self.top_mut().cursor += by;
+    }
+
     /// Pads the current group with some amount of padding.
     pub fn pad(&mut self, padding: impl Into<Padding>) {
         let padding = padding.into();

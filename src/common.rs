@@ -5,7 +5,7 @@
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign};
 
 /// A two-dimensional vector.
-#[derive(Copy, Clone, PartialEq)]
+#[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Vector {
     pub x: f32,
     pub y: f32,
@@ -15,14 +15,14 @@ pub struct Vector {
 pub type Point = Vector;
 
 /// An axis-aligned rectangle.
-#[derive(Copy, Clone, PartialEq)]
+#[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Rect {
     pub position: Point,
     pub size: Vector,
 }
 
 /// An 8-bit RGBA color.
-#[derive(Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct Color {
     pub r: u8,
     pub g: u8,
@@ -34,6 +34,13 @@ impl Vector {
     /// Creates a new vector from X/Y coordinates.
     pub fn new(x: f32, y: f32) -> Self {
         Self { x, y }
+    }
+
+    /// Returns the distance between this point and another point.
+    pub fn distance(self, other: Vector) -> f32 {
+        let dx = other.x - self.x;
+        let dy = other.y - self.y;
+        (dx * dx + dy * dy).sqrt()
     }
 }
 
@@ -70,6 +77,11 @@ impl Color {
             b: b as u8,
             a: a as u8,
         }
+    }
+
+    /// Converts a color to a u32 holding ARGB in its bits, from most significant to least significant.
+    pub const fn to_argb(&self) -> u32 {
+        ((self.a as u32) << 24) | ((self.r as u32) << 16) | ((self.g as u32) << 8) | (self.b as u32)
     }
 
     /// Creates a new color from an RGB hex literal.
