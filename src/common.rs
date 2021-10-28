@@ -2,7 +2,7 @@
 
 #![warn(missing_copy_implementations)]
 
-use std::ops::{Add, Div, Mul, Sub};
+use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign};
 
 /// A two-dimensional vector.
 #[derive(Copy, Clone, PartialEq)]
@@ -206,12 +206,28 @@ impl<T: Into<Self>> Add<T> for Vector {
     }
 }
 
+impl<T: Into<Self>> AddAssign<T> for Vector {
+    fn add_assign(&mut self, v: T) {
+        let v = v.into();
+        self.x += v.x;
+        self.y += v.y;
+    }
+}
+
 impl<T: Into<Self>> Sub<T> for Vector {
     type Output = Self;
 
     fn sub(self, v: T) -> Self {
         let v = v.into();
         vector(self.x - v.x, self.y - v.y)
+    }
+}
+
+impl<T: Into<Self>> SubAssign<T> for Vector {
+    fn sub_assign(&mut self, v: T) {
+        let v = v.into();
+        self.x -= v.x;
+        self.y -= v.y;
     }
 }
 
@@ -224,12 +240,28 @@ impl<T: Into<Self>> Mul<T> for Vector {
     }
 }
 
+impl<T: Into<Self>> MulAssign<T> for Vector {
+    fn mul_assign(&mut self, v: T) {
+        let v = v.into();
+        self.x *= v.x;
+        self.y *= v.y;
+    }
+}
+
 impl<T: Into<Self>> Div<T> for Vector {
     type Output = Self;
 
     fn div(self, v: T) -> Self {
         let v = v.into();
         vector(self.x / v.x, self.y / v.y)
+    }
+}
+
+impl<T: Into<Self>> DivAssign<T> for Vector {
+    fn div_assign(&mut self, v: T) {
+        let v = v.into();
+        self.x /= v.x;
+        self.y /= v.y;
     }
 }
 
@@ -241,10 +273,24 @@ impl Mul<f32> for Vector {
     }
 }
 
+impl MulAssign<f32> for Vector {
+    fn mul_assign(&mut self, s: f32) {
+        self.x *= s;
+        self.y *= s;
+    }
+}
+
 impl Div<f32> for Vector {
     type Output = Self;
 
     fn div(self, s: f32) -> Self {
         vector(self.x / s, self.y / s)
+    }
+}
+
+impl DivAssign<f32> for Vector {
+    fn div_assign(&mut self, s: f32) {
+        self.x /= s;
+        self.y /= s;
     }
 }
