@@ -193,6 +193,11 @@ impl<T: Renderer> Ui<T> {
     // stack getters
     //
 
+    /// Returns the position of the topmost group, in absolute (screen) coordinates.
+    pub fn position(&self) -> Point {
+        self.top().rect.position
+    }
+
     /// Returns the size of the topmost group.
     pub fn size(&self) -> Vector {
         self.top().rect.size
@@ -203,9 +208,9 @@ impl<T: Renderer> Ui<T> {
         self.top().rect.width()
     }
 
-    /// Returns the width of the topmost group.
+    /// Returns the height of the topmost group.
     pub fn height(&self) -> f32 {
-        self.top().rect.width()
+        self.top().rect.height()
     }
 
     /// Returns the "remaining size" of the current group. This is measured by subtracting the group's cursor from
@@ -426,18 +431,13 @@ impl<T: Renderer> Ui<T> {
         self.render().pop();
     }
 
-    /// Allows one to draw in the current group, and *only* in the current group, by translating the renderer's
-    /// matrix to the group's position and shrinking the renderer's clip region to the group's extents.
-    /// Just like in `draw()`, the renderer can be obtained inside of the callback by using [`Ui::render`].
-    pub fn clip<F>(&mut self, do_draw: F)
-    where
-        F: FnOnce(&mut Self),
-    {
-        self.draw(|ui| {
-            let size = ui.size();
-            ui.render().clip(Rect::new(point(0.0, 0.0), size));
-            do_draw(ui);
-        });
+    /// Clips drawing to only occur inside of the current group.
+    ///
+    /// Any pixels outside of the group are discarded. Note that to undo the clip. `render().push()`
+    /// and `render().pop()` must be used.
+    pub fn clip(&mut self) {
+        let rect = self.top().rect;
+        self.render().clip(rect);
     }
 
     /// Draws a rectangle that fills the current group with the given color.

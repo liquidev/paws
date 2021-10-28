@@ -86,7 +86,7 @@ impl Color {
 
     /// Creates a new color from an RGB hex literal.
     pub const fn rgb(hex: u32) -> Self {
-        Self::argb(hex & 0xFF000000)
+        Self::argb(hex | 0xFF000000)
     }
 
     /// Returns a color with the same RGB channels, but with the alpha channel altered.
