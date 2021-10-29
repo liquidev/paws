@@ -2,7 +2,7 @@
 
 #![warn(missing_copy_implementations)]
 
-use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign};
+use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 
 /// A two-dimensional vector.
 #[derive(Debug, Copy, Clone, PartialEq)]
@@ -206,6 +206,14 @@ impl From<(f32, f32)> for Vector {
 impl From<[f32; 2]> for Vector {
     fn from(array: [f32; 2]) -> Self {
         vector(array[0], array[1])
+    }
+}
+
+impl Neg for Vector {
+    type Output = Self;
+
+    fn neg(self) -> Self::Output {
+        vector(-self.x, -self.y)
     }
 }
 
