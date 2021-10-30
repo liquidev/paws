@@ -161,12 +161,12 @@ impl Rect {
 
     /// Returns the top right corner of the rectangle.
     pub fn top_right(&self) -> Point {
-        self.position + point(self.size.x, 0.0)
+        self.position + vector(self.size.x, 0.0)
     }
 
     /// Returns the bottom left corner of the rectangle.
     pub fn bottom_left(&self) -> Point {
-        self.position + point(0.0, self.size.y)
+        self.position + vector(0.0, self.size.y)
     }
 
     /// Returns the bottom right corner of the rectangle.
