@@ -64,9 +64,6 @@ pub struct NoRenderer;
 /// A dummy font used by the NoRenderer backend.
 pub struct NoRendererFont;
 
-/// A dummy image used by the NoRenderer backend.
-pub struct NoRendererImage;
-
 impl Renderer for NoRenderer {
     type Font = NoRendererFont;
 
