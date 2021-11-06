@@ -6,20 +6,23 @@ use crate::layout::*;
 /// The type of line cap to use when rendering.
 #[derive(Copy, Clone, PartialEq, Eq)]
 pub enum LineCap {
+    /// The ends are not extended.
     Butt,
+    /// The ends are extended by the line's thickness divided by two.
     Square,
+    /// The ends are extended by rounding them off with semicircles.
     Round,
 }
 
 /// The renderer trait, used for all things drawing-related.
-/// This trait is available for the user's convenience. If a type that doesn't implement `Renderer` is specified in
-/// `Ui`, convenience rendering functions are not available and the user must handle rendering all by themselves.
 ///
 /// ## A note on rendering lines
 ///
 /// Renderers should try their best to make lines pixel-perfect. What this means is that lines with a thickness of
-/// 1.0 shouldn't get placed inbetween pixels, as that will make it look blurred out. Some renderers do that, and on
-/// those renderers stroke points should get moved by half a pixel.
+/// 1.0 shouldn't get placed inbetween pixels, as that will make it look blurred out. Some vector graphics renderers
+/// do that, and on those renderers stroke points should get moved by half a pixel.
+///
+/// Examples of such renderers include HTML5 canvas, Cairo, Skia.
 pub trait Renderer {
     /// The font type used for rendering text. May be `()` if text rendering isn't supported.
     type Font;
@@ -42,7 +45,7 @@ pub trait Renderer {
     fn fill(&mut self, rect: Rect, color: Color, radius: f32);
     /// Draws an outline for the provided rectangle, with the given color, corner radius, and thickness.
     fn outline(&mut self, rect: Rect, color: Color, radius: f32, thickness: f32);
-    /// Draws a line from point A to point B, with the given color, cap type, joint type, and thickness.
+    /// Draws a line from point A to point B, with the given color, cap type, and thickness.
     fn line(&mut self, a: Point, b: Point, color: Color, cap: LineCap, thickness: f32);
 
     /// Draws text aligned inside of the provided rectangle, with the given color.

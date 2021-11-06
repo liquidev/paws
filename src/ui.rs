@@ -146,16 +146,11 @@ use crate::build;
 ///
 /// # Rendering
 ///
-/// When `T` is a type that implements the [`Renderer`] trait, the `Ui` instance will get some extra methods for
-/// rendering groups on the screen. The renderer can be retrieved as an immutable reference (for probing and
-/// measurements) using [`Ui::renderer`], and as a mutable reference (for doing actual rendering) using [`Ui::render`].
-///
-/// ## Properties
-///
-/// `Ui` gains some extra per-group properties for rendering onto the screen if `T` implements [`Renderer`]. Each of the
-/// `set_*` methods operates on the topmost (current) group in the stack, and each of these properties is inherent to
-/// that group. All properties (except the cursor) are inherited from the parent group when a new group is pushed onto
-/// the stack.
+/// Because there's usually no use to using a UI library without any actual rendering, the [`Ui`] type takes an extra
+/// _renderer_ type as a parameter. The methods from this type are available via the `Deref` and `DerefMut` traits,
+/// except for names that collide with those defined on `Ui` itself (obviously).
+/// The renderer can be retrieved as an immutable reference (for probing and measurements) using [`Ui::renderer`],
+/// and as a mutable reference (for doing actual rendering) using [`Ui::render`].
 ///
 /// # `build!`
 ///
@@ -433,8 +428,8 @@ impl<T: Renderer> Ui<T> {
 
     /// Clips drawing to only occur inside of the current group.
     ///
-    /// Any pixels outside of the group are discarded. Note that to undo the clip. `render().push()`
-    /// and `render().pop()` must be used.
+    /// Any pixels outside of the group are discarded. Note that to undo the clip,
+    /// [`self.render().push()`][Renderer::push] and [`self.render().pop()`][Renderer::pop] must be used.
     pub fn clip(&mut self) {
         let rect = self.top().rect;
         self.render().clip(rect);
@@ -474,6 +469,7 @@ impl<T: Renderer> Ui<T> {
         self.top_mut().line_cap = new_line_cap;
     }
 
+    /// Helper function for drawing borders around the current group.
     fn border(&mut self, a: Point, b: Point, color: Color, thickness: f32) {
         let line_cap = self.top().line_cap;
         self.render().line(a, b, color, line_cap, thickness);

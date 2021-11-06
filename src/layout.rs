@@ -59,8 +59,9 @@ pub struct Padding {
 }
 
 impl Padding {
-    /// Creates padding from horizontal and vertical amounts. This is equivalent to using
-    /// `Padding::rblt(horizontal, vertical, horizontal, vertical)`.
+    /// Creates padding from horizontal and vertical amounts. This is equivalent constructing
+    /// the padding where `right` and `left` are set to `horizontal`, and `bottom` and `top` are
+    /// set to `vertical`.
     pub fn hv(horizontal: f32, vertical: f32) -> Self {
         Self {
             right: horizontal,
