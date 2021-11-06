@@ -7,11 +7,26 @@ projects.
 This project is still a work in progress, expect breaking changes as the API
 is not final.
 
-## Roadmap
+```rs
+use paws::rgb;
 
-- Actually test if it works! Most of the code is taken directly from
-  [NetCanv](https://github.com/liquidev/netcanv), but tweaked to be more general.
-  I haven't tested these tweaks yet as I don't have a graphical backend at hand.
-- `paws-skia` – standalone Skia backend
-- `paws-build` – attribute macro that helps you `push()` and `pop()` groups
-- generalizations in `paws::Renderer`
+type Ui = paws::Ui<MyRenderer>;
+
+let mut ui = Ui::new(MyRenderer::new());
+
+ui.root((800, 600), Layout::Freeform);
+
+ui.push();
+ui.pad(8);
+
+ui.fill(rgb(0, 127, 255));
+
+// draw more components here
+
+ui.pop();
+```
+
+The whole idea behind paws is that the layout is built at the same time as it's drawn, by using
+a stack of rectangles with extra metadata – **groups**.
+
+For more information on how to lay out elements, please read the [documentation](https://docs.rs/paws/latest/paws/struct.Ui.html).
