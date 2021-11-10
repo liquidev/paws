@@ -188,6 +188,16 @@ impl Rect {
     pub fn center_y(&self) -> f32 {
         self.position.y + self.size.y / 2.0
     }
+
+    /// Returns a _sorted_ rectangle - that is, the same rectangle, but with the width and height
+    /// guaranteed to be positive.
+    pub fn sort(self) -> Self {
+        let left = f32::min(self.left(), self.right());
+        let right = f32::max(self.left(), self.right());
+        let top = f32::min(self.top(), self.bottom());
+        let bottom = f32::max(self.top(), self.bottom());
+        Self::new(point(left, top), vector(right - left, bottom - top))
+    }
 }
 
 impl Default for Vector {
