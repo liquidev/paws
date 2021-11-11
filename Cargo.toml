@@ -1,6 +1,6 @@
 [package]
 name = "paws"
-version = "0.2.0"
+version = "0.3.0"
 authors = ["lqdev <liquidekgaming@gmail.com>"]
 edition = "2018"
 description = "A very simple, bring-your-own-backend UI layout library built for quick prototyping."
