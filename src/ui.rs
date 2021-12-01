@@ -185,12 +185,17 @@ impl<T: Renderer> Ui<T> {
     }
 
     //
-    // stack getters
+    // Stack getters (and setters)
     //
 
     /// Returns the position of the topmost group, in absolute (screen) coordinates.
     pub fn position(&self) -> Point {
         self.top().rect.position
+    }
+
+    /// Sets the absolute position of the topmost group.
+    pub fn set_position(&mut self, new_position: Point) {
+        self.top_mut().rect.position = new_position;
     }
 
     /// Returns the size of the topmost group.
