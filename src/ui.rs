@@ -213,6 +213,12 @@ impl<T: Renderer> Ui<T> {
         self.top().rect.height()
     }
 
+    /// Returns the current group's rectangle. The rectangle's position is expressed in
+    /// absolute coordinates.
+    pub fn rect(&self) -> Rect {
+        self.top().rect
+    }
+
     /// Returns the "remaining size" of the current group. This is measured by subtracting the group's cursor from
     /// its size, effectively giving you the size that remains in the group. In reversed layouts, the cursor is added
     /// instead, as it goes into the negative. On the freeform layout, this always returns (0, 0).
