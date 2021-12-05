@@ -59,6 +59,8 @@ impl Color {
     pub const BLACK: Self = rgb(0, 0, 0);
     /// Solid white.
     pub const WHITE: Self = rgb(255, 255, 255);
+    /// Fully transparent black.
+    pub const TRANSPARENT: Self = rgba(0, 0, 0, 0);
 
     /// Creates a new color from channels.
     pub const fn new(r: u8, g: u8, b: u8, a: u8) -> Self {
