@@ -36,11 +36,19 @@ impl Vector {
         Self { x, y }
     }
 
+    /// Returns the length² of a vector.
+    pub fn length_sq(self) -> f32 {
+        self.x * self.x + self.y * self.y
+    }
+
+    /// Returns the length of a vector.
+    pub fn length(self) -> f32 {
+        self.length_sq().sqrt()
+    }
+
     /// Returns the distance between this point and another point.
     pub fn distance(self, other: Vector) -> f32 {
-        let dx = other.x - self.x;
-        let dy = other.y - self.y;
-        (dx * dx + dy * dy).sqrt()
+        (other - self).length()
     }
 }
 
