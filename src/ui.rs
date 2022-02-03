@@ -219,6 +219,11 @@ impl<T: Renderer> Ui<T> {
         self.top().rect
     }
 
+    /// Returns the root group's rectangle.
+    pub fn root_rect(&self) -> Rect {
+        self.stack.first().expect("no root group").rect
+    }
+
     /// Returns the "remaining size" of the current group. This is measured by subtracting the group's cursor from
     /// its size, effectively giving you the size that remains in the group. In reversed layouts, the cursor is added
     /// instead, as it goes into the negative. On the freeform layout, this always returns (0, 0).
